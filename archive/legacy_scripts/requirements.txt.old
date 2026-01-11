@@ -1,0 +1,29 @@
+# Core libraries
+aiohttp==3.9.1
+requests==2.31.0
+
+# Computer Vision & Detection
+opencv-python==4.9.0.80
+ultralytics==8.1.0
+pillow==10.2.0
+
+# OCR Libraries
+easyocr==1.7.1
+pytesseract==0.3.10
+
+# String Matching
+fuzzywuzzy==0.18.0
+python-Levenshtein==0.25.0
+
+# Database
+aiosqlite==0.19.0
+
+# Progress & Utilities
+tqdm==4.66.1
+
+# Google Cloud Storage (optional)
+google-cloud-storage==2.14.0
+
+# Additional utilities
+python-dateutil==2.8.2
+numpy==1.26.3

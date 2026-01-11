@@ -1,0 +1,116 @@
+# Vehicle Matching System - Hackathon Challenge
+
+Complete Python pipeline to match entry and exit images of vehicles from randomized URLs using license plate detection and fuzzy matching.
+
+## Project Structure
+
+```
+Vehicle-Matching-System/
+├── data/                          # Database and intermediate data
+│   ├── vehicle_metadata.db        # SQLite database with metadata
+│   └── metadata_export.json       # JSON export for inspection
+├── cropped_plates/                # Cropped license plate images
+├── models/                        # YOLO models
+├── logs/                          # Log files
+├── requirements.txt               # Python dependencies
+├── vehicle_images_input.txt       # Input: shuffled image URLs
+├── submission.txt                 # Output: matched pairs
+├── phase1_metadata_extraction.py  # Phase 1 script
+├── phase2_plate_detection.py      # Phase 2 script (to be created)
+├── phase3_ocr_extraction.py       # Phase 3 script (to be created)
+├── phase4_matching.py             # Phase 4 script (to be created)
+└── phase5_output_generation.py    # Phase 5 script (to be created)
+```
+
+## Installation
+
+```bash
+# Create virtual environment (recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+## Pipeline Phases
+
+### Phase 1: Data Preparation & Metadata Extraction
+- Reads `vehicle_images_input.txt`
+- Extracts metadata via HEAD requests (Last-Modified, content info)
+- Stores data in SQLite database
+
+**Run:**
+```bash
+python phase1_metadata_extraction.py
+```
+
+### Phase 2: License Plate Detection (YOLO)
+- Downloads images
+- Runs YOLOv8/v9 for license plate detection
+- Falls back to metadata bbox if detection fails
+- Saves cropped plates
+
+**Run:**
+```bash
+python phase2_plate_detection.py
+```
+
+### Phase 3: OCR and Text Extraction
+- Primary: FastALPR for plate recognition
+- Fallback: EasyOCR/Tesseract
+- Similarity correction for common OCR errors
+- Stores results in database
+
+**Run:**
+```bash
+python phase3_ocr_extraction.py
+```
+
+### Phase 4: Fuzzy Matching and Time Logic
+- Levenshtein distance for plate similarity
+- Time-interval logic (entry < exit)
+- Global optimization for pairing
+
+**Run:**
+```bash
+python phase4_matching.py
+```
+
+### Phase 5: Output Generation
+- Formats matched pairs
+- Generates `submission.txt`
+
+**Run:**
+```bash
+python phase5_output_generation.py
+```
+
+## Database Schema
+
+### vehicle_metadata table
+- `id`: Primary key
+- `url`: Image URL (unique)
+- `upload_time`: Upload timestamp
+- `last_modified`: Last-Modified header
+- `content_type`: MIME type
+- `content_length`: File size
+- `bbox_x, bbox_y, bbox_w, bbox_h`: License plate bounding box
+- `metadata_json`: All headers as JSON
+- `extraction_timestamp`: When metadata was extracted
+- `status`: success/error/timeout
+
+## Features
+
+- Async HTTP requests with aiohttp for fast downloads
+- Progress bars with tqdm
+- Comprehensive error handling
+- SQLite database for data persistence
+- Detailed logging
+- Modular phase-based architecture
+
+## Notes
+
+- Each vehicle appears exactly twice in the input
+- Output format: `url1,url2` (one pair per line)
+- All intermediate results saved for debugging
