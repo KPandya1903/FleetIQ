@@ -1,0 +1,66 @@
+# Vehicle Re-Identification System Configuration
+
+# Database Configuration
+database:
+  path: "data/vehicle_metadata.db"
+
+# Image Processing
+image_processing:
+  max_concurrent_downloads: 30
+  download_timeout: 120000  # milliseconds
+
+# OCR Configuration
+ocr:
+  # Fast-ALPR Primary Engine
+  fast_alpr:
+    enabled: true
+    confidence_threshold: 0.5
+    enhancement_strategies:
+      - "original"
+      - "clahe"
+      - "sharpen"
+      - "bilateral"
+      - "adaptive_threshold"
+      - "morphological"
+
+  # EasyOCR Fallback
+  easyocr:
+    enabled: true
+    languages: ["en"]
+    confidence_threshold: 0.4
+
+  # Character Normalization
+  character_mapping:
+    "0": "O"
+    "O": "0"
+    "1": "I"
+    "I": "1"
+    "8": "B"
+    "B": "8"
+    "5": "S"
+    "S": "5"
+
+# Matching Algorithm
+matching:
+  # Fuzzy Matching Parameters
+  min_similarity_threshold: 75  # Minimum plate similarity (0-100)
+  max_time_difference_hours: 72  # Maximum time between entry/exit
+
+  # Temporal Weighting
+  exact_match_boost: 100
+  time_proximity_weight: 10
+
+  # Algorithm Type
+  algorithm: "greedy"  # Options: "greedy", "hungarian", "stable_marriage"
+
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/vehicle_matching.log"
+
+# Output
+output:
+  submission_file: "submission.txt"
+  results_directory: "results"
+  format: "comma_separated"  # Format for submission file
