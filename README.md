@@ -116,7 +116,7 @@ character_mapping = {
 ## 🛠️ Technical Stack
 
 | Category | Technology |
-|----------|-----------|
+|----------|-----------| 
 | **Language** | Python 3.8+ |
 | **Computer Vision** | OpenCV 4.8+, PIL |
 | **Object Detection** | Ultralytics YOLOv8 |
@@ -138,8 +138,8 @@ character_mapping = {
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/KPandya1903/Vehicle-Matching-System.git
-cd Vehicle-Matching-System
+git clone https://github.com/KPandya1903/FleetIQ.git
+cd FleetIQ
 ```
 
 2. **Create virtual environment**
@@ -207,7 +207,7 @@ ocr:
 ## 📁 Project Structure
 
 ```
-Vehicle-Matching-System/
+FleetIQ/
 ├── src/                          # Source code
 │   ├── data/                     # Data loading & metadata extraction
 │   │   ├── __init__.py
